@@ -1,0 +1,4 @@
+redis:
+  tag: latest
+  credentials:
+      password: redis

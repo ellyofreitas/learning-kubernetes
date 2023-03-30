@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-redis-deployment
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-redis
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:{{ .Values.redis.tag }}
+          resources: {}
+          ports:
+            - containerPort: 27017
+          args:
+            - --requirepass
+            - {{ .Values.redis.credentials.password }}

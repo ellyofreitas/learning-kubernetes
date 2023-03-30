@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-nodeserver-deployment
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-nodeserver
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-nodeserver
+    spec:
+      containers:
+        - name: nodeserver
+          image: ellyofreitas/nodeserver:latest
+          imagePullPolicy: Never
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 9090
+          env:
+            - name: REDIS_URL
+              value: "redis://:{{ .Values.redis.credentials.password }}@{{ .Release.Name }}-redis-service"
